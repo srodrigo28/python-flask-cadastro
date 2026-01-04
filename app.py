@@ -1,27 +1,23 @@
 from flask import Flask, request, render_template
-
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+# instalado: python -m pip install flask_wtf
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'abc123'
 
-@app.route('/', methods=['GET'])
-def index():
-    return 'Hello world!'
+class RegisterForm(FlaskForm):
+    first_name = StringField('Primeiro nome')
+    last_name  = StringField('Sobrenome')
+    email      = StringField('E-mail')
+    password   = PasswordField('Senha')
+    confirm    = PasswordField('Confirme a senha')
+    
+    submit     = SubmitField('Cadastrar')
 
-@app.route('/submit', methods=['GET', "POST"])
-def submit():
-    if request.method == 'POST':
-        data = request.form['nome']
-
-        return f'Você enviou {data}'
-    return '''
-        <form method="POST">
-            Nome: <input type="text" name="nome">
-            <input type="submit" value="Enviar" />
-        </form>
-    '''
-
-@app.route('/template')
-def template():
-    return render_template('index.html', name="Ana Júlia", age=28, male='feminino' ) 
+@app.route('/register')
+def register():
+    form = RegisterForm()
+    return render_template('register.html', form=form)
 
 # Roda aplicação
 if __name__ == '__main__':
