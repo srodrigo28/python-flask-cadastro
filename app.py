@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
@@ -18,6 +18,10 @@ def submit():
             <input type="submit" value="Enviar" />
         </form>
     '''
+
+@app.route('/template')
+def template():
+    return render_template('index.html', name="Ana Júlia", age=28, male='feminino' ) 
 
 # Roda aplicação
 if __name__ == '__main__':
